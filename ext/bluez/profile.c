@@ -1,10 +1,21 @@
+// this ruby binding allows a profile to be registered
+// with the bluez stack.
+//
+// (c) C. Andrews 2021
+//
+// References:
+//
+// https://github.com/pauloborges/bluez/blob/master/doc/profile-api.txt
+// https://github.com/tonyespy/bluez5-spp-example
+// https://github.com/bratsche/glib/blob/master/gio/tests/gdbus-example-server.c
+
+
 #include <gio/gio.h>
 #include <gio/gunixfdlist.h>
 #include <stdlib.h>
 #include <ruby.h>
 
-// this ruby binding allows a profile to be registered
-// with the bluez stack.
+
 
 #define BLUEZ_BUS_NAME                   "org.bluez"
 #define BLUEZ_BUS_PATH                   "/org/bluez"
