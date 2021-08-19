@@ -47,6 +47,9 @@ example code:
 
     end
 
+    path = '/my/dbus/path'
+    uuid = '1101'
+
     options = {
       name: 'my profile',
       channel: 3
@@ -59,12 +62,12 @@ example code:
     profile.stop  # stops the loop
 
 
-path:
+path: string
 
     the dbus object path of the profile.
     eg: "/serial/special/profile"
 
-uuid:
+uuid: string
 
     the uuid of the profile
 
@@ -136,6 +139,6 @@ Available options:
 
           Profile version (for SDP record)
 
-        features: int 
+        features: int
 
           Profile features (for SDP record)
