@@ -48,7 +48,7 @@ example code:
     end
 
     options = {
-      name: 'my/path',
+      name: 'my profile',
       channel: 3
       connect: false
     }
@@ -61,8 +61,8 @@ example code:
 
 path:
 
-    the dbus object path of the profile
-
+    the dbus object path of the profile.
+    eg: "/serial/special/profile"
 
 uuid:
 
@@ -71,17 +71,17 @@ uuid:
 
 Available options:
 
-        string name
+        name: string
 
           Human readable name for the profile
 
-        string service
+        service: string
 
           The primary service class UUID
           (if different from the actual
            profile UUID)
 
-        string role
+        role: string
 
           For asymmetric profiles that do not
           have UUIDs available to uniquely
@@ -94,7 +94,7 @@ Available options:
               Bluez::Profile::Client
               Bluez::Profile::Server
 
-        int channel
+        channel: int
 
           RFCOMM channel number that is used
           for client and server UUIDs.
@@ -102,7 +102,7 @@ Available options:
           If applicable it will be used in the
           SDP record as well.
 
-        int psm
+        psm: int
 
           PSM number that is used for client
           and server UUIDs.
@@ -110,32 +110,32 @@ Available options:
           If applicable it will be used in the
           SDP record as well.
 
-        boolean authentication
+        authentication: boolean
 
           Pairing is required before connections
           will be established. No devices will
           be connected if not paired.
 
-        boolean authorization
+        authorization: boolean
 
           Request authorization before any
           connection will be established.
 
-        boolean connect
+        connect: boolean
 
           In case of a client UUID this will
           force connection of the RFCOMM or
           L2CAP channels when a remote device
           is connected.
 
-        string record
+        record: string
 
           Provide a manual SDP record.
 
-        int version
+        version: int
 
           Profile version (for SDP record)
 
-        int features
+        features: int 
 
           Profile features (for SDP record)
