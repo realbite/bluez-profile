@@ -132,7 +132,7 @@ Available options:
 
           Provide a manual SDP record.
 
-        int Version
+        int version
 
           Profile version (for SDP record)
 

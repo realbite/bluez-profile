@@ -6,9 +6,8 @@
 # C. Andrews 2021
 
 require 'bluez/profile'
-
 require 'socket'
-require 'pry'
+
 
 # define our serial profile class here which will
 # just read from our usb device and forward the raw info

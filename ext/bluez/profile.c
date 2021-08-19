@@ -15,8 +15,6 @@
 #include <stdlib.h>
 #include <ruby.h>
 
-
-
 #define BLUEZ_BUS_NAME                   "org.bluez"
 #define BLUEZ_BUS_PATH                   "/org/bluez"
 #define BLUEZ_INTERFACE_DEVICE1          "org.bluez.Device1"
@@ -93,20 +91,18 @@ handle_method_call (GDBusConnection       *connection,
                     GDBusMethodInvocation *invocation,
                     gpointer               user_data)
 {
-  //MyObject *myobj = user_data;
 
   VALUE self;
   GDBusMessage *message;
   GUnixFDList *fd_list;
-	GError *error = NULL;
+  GError *error = NULL;
   gchar*      path;
   int         fd;
   GVariantIter *list;
 
-
   self = (VALUE) user_data;
 
-	if (g_strcmp0 (method_name, "Release") == 0)
+  if (g_strcmp0 (method_name, "Release") == 0)
     {
       //printf("Release Called\n");
       rb_funcall(self,  rb_intern("release"), 0 );
@@ -171,8 +167,6 @@ static const GDBusInterfaceVTable vtable =
 
 static guint register_object(VALUE self, t_profile_data* data, const gchar* path){
   guint id;
-  //gpointer user_data = NULL;
-  //GDestroyNotify user_data_free_func;
   GError *error = NULL;
 
   id = g_dbus_connection_register_object (
@@ -193,29 +187,29 @@ static guint register_object(VALUE self, t_profile_data* data, const gchar* path
 int register_profile(VALUE path, VALUE uuid, VALUE options, GDBusProxy *proxy){
 
   GVariant *profile;
-	GVariantBuilder profile_builder;
-	GError *error = NULL;
+  GVariantBuilder profile_builder;
+  GError *error = NULL;
   VALUE val;
 
-	//printf("register_profile called!\n");
+  //printf("register_profile called!\n");
 
-	g_variant_builder_init(&profile_builder, G_VARIANT_TYPE("(osa{sv})"));
+  g_variant_builder_init(&profile_builder, G_VARIANT_TYPE("(osa{sv})"));
 
-	g_variant_builder_add (&profile_builder, "o",StringValueCStr(path));
+  g_variant_builder_add (&profile_builder, "o",StringValueCStr(path));
 
-	g_variant_builder_add (&profile_builder, "s", StringValueCStr(uuid));
+  g_variant_builder_add (&profile_builder, "s", StringValueCStr(uuid));
 
-	g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("a{sv}"));
+  g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("a{sv}"));
 
   // Name
 
   val = rb_hash_aref(options, ID2SYM(rb_intern("name")));
   if (val != Qnil){
     g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "Name");
-  	g_variant_builder_add (&profile_builder, "v",
-  			g_variant_new_string(StringValueCStr(val) ));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_add (&profile_builder, "s", "Name");
+    g_variant_builder_add (&profile_builder, "v",
+        g_variant_new_string(StringValueCStr(val) ));
+    g_variant_builder_close(&profile_builder);
   }
 
   // Service
@@ -223,17 +217,16 @@ int register_profile(VALUE path, VALUE uuid, VALUE options, GDBusProxy *proxy){
   val = rb_hash_aref(options, ID2SYM(rb_intern("service")));
   if (val != Qnil){
     g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "Service");
-  	g_variant_builder_add (&profile_builder, "v",
-  			g_variant_new_string(StringValueCStr(val) ));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_add (&profile_builder, "s", "Service");
+    g_variant_builder_add (&profile_builder, "v",
+        g_variant_new_string(StringValueCStr(val) ));
+    g_variant_builder_close(&profile_builder);
   }
 
   // Role
 
   val = rb_hash_aref(options, ID2SYM(rb_intern("role")));
   if (val != Qnil){
-    //val = rb_const_get_at(rb_mMath, rb_intern("PI_ISH"));
     g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
     g_variant_builder_add (&profile_builder, "s", "Role");
     g_variant_builder_add (&profile_builder, "v",
@@ -245,20 +238,20 @@ int register_profile(VALUE path, VALUE uuid, VALUE options, GDBusProxy *proxy){
 
   val = rb_hash_aref(options, ID2SYM(rb_intern("channel")));
   if (val != Qnil){
-  	g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "Channel");
-  	g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
+    g_variant_builder_add (&profile_builder, "s", "Channel");
+    g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
+    g_variant_builder_close(&profile_builder);
   }
 
   // PSM
 
   val = rb_hash_aref(options, ID2SYM(rb_intern("psm")));
   if (val != Qnil){
-  	g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "PSM");
-  	g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
+    g_variant_builder_add (&profile_builder, "s", "PSM");
+    g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
+    g_variant_builder_close(&profile_builder);
   }
 
   // RequireAuthentication
@@ -296,58 +289,42 @@ int register_profile(VALUE path, VALUE uuid, VALUE options, GDBusProxy *proxy){
   val = rb_hash_aref(options, ID2SYM(rb_intern("record")));
   if (val != Qnil){
     g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "ServiceRecord");
-  	g_variant_builder_add (&profile_builder, "v",
-  			g_variant_new_string(StringValueCStr(val) ));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_add (&profile_builder, "s", "ServiceRecord");
+    g_variant_builder_add (&profile_builder, "v",
+        g_variant_new_string(StringValueCStr(val) ));
+    g_variant_builder_close(&profile_builder);
   }
 
   // Version
 
   val = rb_hash_aref(options, ID2SYM(rb_intern("version")));
   if (val != Qnil){
-  	g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "Version");
-  	g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
+    g_variant_builder_add (&profile_builder, "s", "Version");
+    g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
+    g_variant_builder_close(&profile_builder);
   }
 
   // Features
 
   val = rb_hash_aref(options, ID2SYM(rb_intern("features")));
   if (val != Qnil){
-  	g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-  	g_variant_builder_add (&profile_builder, "s", "Features");
-  	g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
-  	g_variant_builder_close(&profile_builder);
+    g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
+    g_variant_builder_add (&profile_builder, "s", "Features");
+    g_variant_builder_add (&profile_builder, "v", g_variant_new_uint16(FIX2INT(val)));
+    g_variant_builder_close(&profile_builder);
   }
 
-
-
-	// g_variant_builder_open(&profile_builder, G_VARIANT_TYPE("{sv}"));
-	// g_variant_builder_add (&profile_builder, "s", "Role");
-  //
-	// if (1) {
-	// 	g_variant_builder_add (&profile_builder, "v",
-	// 			g_variant_new_string("server"));
-	// } else {
-	// 	g_variant_builder_add (&profile_builder, "v",
-	// 			g_variant_new_string("client"));
-	// }
-  //
-	// g_variant_builder_close(&profile_builder);
-
-
-	g_variant_builder_close(&profile_builder);
-	profile = g_variant_builder_end(&profile_builder);
+  g_variant_builder_close(&profile_builder);
+  profile = g_variant_builder_end(&profile_builder);
 
   g_dbus_proxy_call_sync (proxy,
-				"RegisterProfile",
-				profile,
-				G_DBUS_CALL_FLAGS_NONE,
-				-1,
-				NULL,
-				&error);
+        "RegisterProfile",
+        profile,
+        G_DBUS_CALL_FLAGS_NONE,
+        -1,
+        NULL,
+        &error);
 
   if (error!=NULL){
     return 0;
@@ -371,7 +348,7 @@ static VALUE profile_initialize(VALUE self, VALUE path, VALUE uuid, VALUE option
   if (!g_variant_is_object_path(cpath)) {
     rb_raise(eProfileError, "invalid object path");
     return Qnil;
-	}
+  }
 
   data->loop = g_main_loop_new (NULL, FALSE);
   data->running = FALSE;
@@ -392,13 +369,13 @@ static VALUE profile_initialize(VALUE self, VALUE path, VALUE uuid, VALUE option
   // obtain a proxy to bluez profile manager.
 
   data->proxy = g_dbus_proxy_new_sync (data->conn,
-  				G_DBUS_PROXY_FLAGS_NONE,
-  				NULL,/* GDBusInterfaceInfo */
-  				BLUEZ_BUS_NAME,/* name */
-  				BLUEZ_BUS_PATH,/* object path */
-  				BLUEZ_INTERFACE_PROFILEMANAGER1,/* interface */
-  				NULL,/* GCancellable */
-  				&error);
+          G_DBUS_PROXY_FLAGS_NONE,
+          NULL,/* GDBusInterfaceInfo */
+          BLUEZ_BUS_NAME,/* name */
+          BLUEZ_BUS_PATH,/* object path */
+          BLUEZ_INTERFACE_PROFILEMANAGER1,/* interface */
+          NULL,/* GCancellable */
+          &error);
 
   if (error!=NULL){
     rb_raise(eProfileError, "error connecting to bluez profile manager");
@@ -448,9 +425,6 @@ static VALUE profile_stop(VALUE self){
   t_profile_data* data = NULL;
   Data_Get_Struct(self, t_profile_data, data);
   data->running = FALSE;
-  // if (g_main_loop_is_running(data->loop) ){
-  //   g_main_loop_quit (data->loop);
-  // }
   return self;
 }
 

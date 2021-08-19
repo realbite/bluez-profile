@@ -30,6 +30,7 @@ backup/
 .loadfile
 *.gem
 config/deploy*
+*/Makefile
 
 /nbproject/private/
 
