@@ -3,9 +3,14 @@
 this gem allows easy creation of bluetooth services.
 For example create a serial link over to another device using bluetooth.
 
-the gem depends on glib-2 being installed on your system.
 
 Clive Andrews 2021
+
+## dependencies
+
+* Linux/Unix type system
+* bluez 5
+* glib-2
 
 
 ## API
@@ -69,7 +74,7 @@ path: string
 
 uuid: string
 
-    the uuid of the profile
+    the dbus profile uuid
 
 
 Available options:
@@ -142,3 +147,7 @@ Available options:
         features: int
 
           Profile features (for SDP record)
+
+## examples
+
+See the `/examples` folder.

@@ -76,6 +76,7 @@ static VALUE profile_alloc_data(VALUE self){
   data->conn = NULL;
   data->proxy = NULL;
   data->introspection_data = NULL;
+  data->loop = NULL;
   obj = Data_Wrap_Struct(self, 0, profile_free_data, data);
   return obj;
 }
@@ -97,6 +98,7 @@ handle_method_call (GDBusConnection       *connection,
   GUnixFDList *fd_list;
   GError *error = NULL;
   gchar*      path;
+  int         fd_idx;
   int         fd;
   GVariantIter *list;
 
@@ -110,10 +112,10 @@ handle_method_call (GDBusConnection       *connection,
   else if (g_strcmp0 (method_name, "NewConnection") == 0)
   // in_signature="oha{sv}"
     {
-        g_variant_get (parameters, "(oha{sv})", &path, &fd, &list);
+        g_variant_get (parameters, "(oha{sv})", &path, &fd_idx, &list);
         message = g_dbus_method_invocation_get_message (invocation);
         fd_list = g_dbus_message_get_unix_fd_list (message);
-        fd = g_unix_fd_list_get (fd_list, 0, &error);
+        fd = g_unix_fd_list_get (fd_list, fd_idx, &error);
         if (error!=NULL){
           rb_raise(eProfileError, "invalid file descriptor");
           return;
