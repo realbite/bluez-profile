@@ -1,7 +1,9 @@
-# register profiles with bluez
+# bluez Profile API bindings
 
 this gem allows easy creation of bluetooth services.
 For example create a serial link over to another device using bluetooth.
+
+ https://github.com/pauloborges/bluez/blob/master/doc/profile-api.txt
 
 
 Clive Andrews 2021
@@ -10,8 +12,14 @@ Clive Andrews 2021
 
 * Linux/Unix type system
 * bluez 5
-* glib-2
+* glib-2 (dev)
 
+## prerequisites
+
+your bluetooth devices must be paired and trusted outside of this gem
+in order for them to communicate.
+
+use eg `bluetoothctl`
 
 ## API
 
@@ -148,6 +156,34 @@ Available options:
 
           Profile features (for SDP record)
 
+## server
+
+If a channel number is already in use your service may not be registered.
+Check that your services have been registered correctly with eg:
+
+    sudo sdptool browse local
+
 ## examples
 
 See the `/examples` folder.
+
+## issues
+
+The server side of things seems to work fine.
+
+run several servers over the same serial service using different
+channel numbers
+
+on the client ( paired and trusted) connect each channel eg :
+
+    sudo rfcomm connect /dev/rfcomm0 remoteaddr channel1
+    sudo rfcomm connect /dev/rfcomm1 remoteaddr channel2
+    sudo rfcomm connect /dev/rfcomm2 remoteaddr channel3
+
+this works perfectly. each device file allows interaction with the correct server.
+
+*BUT* if on the client a profile is registered with bluez using this gem
+and a connection made to the server then things get in a muddle and output
+for the one channel gets sent to the wrong profile !!
+
+any ideas ??
