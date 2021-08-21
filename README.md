@@ -21,6 +21,10 @@ in order for them to communicate.
 
 use eg `bluetoothctl`
 
+## install
+
+    gem install bluez-profile
+
 ## API
 
 example code:
