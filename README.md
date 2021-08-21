@@ -1,4 +1,4 @@
-# bluez Profile API bindings
+# Ruby binding for bluez Profile API
 
 this gem allows easy creation of bluetooth services.
 For example create a serial link over to another device using bluetooth.
