@@ -414,8 +414,9 @@ static VALUE profile_run(VALUE self){
   if (!data->running){
     data->running = TRUE;
     while(data->running){
-      g_main_context_iteration (context, FALSE);
+      g_main_context_iteration(context, FALSE);
       rb_thread_schedule();
+      g_usleep(50);
     }
   }
   return self;
